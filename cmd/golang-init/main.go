@@ -14,6 +14,10 @@ func Run(context.Context, *cli.Command) error {
 
 	fmt.Println("Hello World")
 
+	http.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Hello World toto")
+	})
+
 	http.HandleFunc("/bar/{id}", func(w http.ResponseWriter, r *http.Request) {
 		id := r.PathValue("id")
 		_, err := fmt.Fprintf(w, "Item ID: %s", id)
@@ -22,7 +26,7 @@ func Run(context.Context, *cli.Command) error {
 		}
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8181", nil))
 
 	return nil
 }

@@ -8,4 +8,8 @@ services:
     container_name: golang_init
     volumes:
       - ./:/go/src/github.com/golang-init
+    env_file:
+      - configuration/env/dev.env
+    ports:
+      - 8181:8181
 
