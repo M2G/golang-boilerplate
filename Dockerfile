@@ -1,5 +1,5 @@
 FROM        golang:1.26.2-alpine3.23 as base
-ENV         GO111MODULE     off
+ENV         GO111MODULE     on
 
 RUN         apk -u add git openssh build-base
 WORKDIR     /go/src/github.com/golang-init
