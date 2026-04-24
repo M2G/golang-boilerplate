@@ -1,0 +1,11 @@
+version: '3.5'
+
+services:
+  api:
+    build:
+      context: .
+      target: dev
+    container_name: golang_init
+    volumes:
+      - ./:/go/src/github.com/golang-init
+
