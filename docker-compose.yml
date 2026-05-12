@@ -5,9 +5,9 @@ services:
     build:
       context: .
       target: dev
-    container_name: golang_init
+    container_name: golang_starter
     volumes:
-      - ./:/go/src/github.com/golang-init
+      - ./:/go/src/github.com/golang-starter
     env_file:
       - configuration/env/dev.env
     ports:
