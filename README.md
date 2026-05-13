@@ -1,4 +1,4 @@
-# GOLANG INIT
+# GOLANG BOILERPLATE
 
 Sample starter operation using Golang.
 
@@ -11,8 +11,8 @@ Docker, Git, Go. Check `conf-dev.yml` from a configuration example.
 clone the repo, then fetch dependencies and u're good to go.
 
 ```
-    git clone git@github.com/golang-starter.git $GOPATH/src/github.com/golang-starter
-    cd $GOPATH/src/github.com/golang-starter
+    git clone git@github.com/golang-boilerplate.git $GOPATH/src/github.com/golang-boilerplate
+    cd $GOPATH/src/github.com/golang-boilerplate
     export GO111MODULE=on;
     go mod vendor;
     go mod download;
@@ -23,8 +23,8 @@ clone the repo, then fetch dependencies and u're good to go.
 ### Build locally
 
 ```
-    git clone git@github.com/golang-starter.git $GOPATH/src/github.com/golang-starter
-    cd $GOPATH/src/github.com/golang-starter
+    git clone git@github.com/golang-boilerplate.git $GOPATH/src/github.com/golang-boilerplate
+    cd $GOPATH/src/github.com/golang-boilerplate
     export GO111MODULE=on;
     go mod vendor;
     go mod download;

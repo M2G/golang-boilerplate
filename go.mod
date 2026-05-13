@@ -1,4 +1,4 @@
-module golang-starter
+module golang-boilerplate
 
 go 1.26.2
 

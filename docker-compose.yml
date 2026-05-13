@@ -5,9 +5,9 @@ services:
     build:
       context: .
       target: dev
-    container_name: golang_starter
+    container_name: golang_boilerplate
     volumes:
-      - ./:/go/src/github.com/golang-starter
+      - ./:/go/src/github.com/golang-boilerplate
     env_file:
       - configuration/env/dev.env
     ports:
