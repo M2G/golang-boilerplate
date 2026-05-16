@@ -16,8 +16,7 @@ import (
 )
 
 func main() {
-  fmt.Println("test boilerplate 2")
-
+  fmt.Println("ok ok ok ok")
   cmd := &cli.Command{
     Name:    "boom",
     Usage:   "Golang boilerplate",
