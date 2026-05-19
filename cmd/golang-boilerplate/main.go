@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"golang-boilerplate/internal/config"
 	"golang-boilerplate/internal/server"
 	"log"
@@ -16,7 +15,6 @@ import (
 )
 
 func main() {
-	fmt.Println("ok ok ok ok")
 	cmd := &cli.Command{
 		Name:    "boom",
 		Usage:   "Golang boilerplate",
