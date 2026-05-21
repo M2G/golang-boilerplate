@@ -1,7 +1,7 @@
 FROM golang:1.26.2 AS base
 ENV GO111MODULE=on
 
-ARG MODD_VERSION=v1.0.2
+ARG MODD_VERSION=v1.0.3
 ENV MODD_VERSION=${MODD_VERSION}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
