@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: .
+      target: dev
+    container_name: golang_boilerplate
+    volumes:
+      - ./:/go/src/github.com/golang-boilerplate
+    environment:
+      - VIRTUAL_PORT=80
+    env_file:
+      - configuration/env/dev.env
+    ports:
+      - 8080:8080
