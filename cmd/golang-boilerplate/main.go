@@ -4,13 +4,22 @@ import (
 	"fmt"
 	"context"
 	"log"
-	_ "net/http"
+	"net/http"
 	"os"
 	"time"
 	"github.com/urfave/cli/v3"
 )
 
 func RunAPI(ctx context.Context, cmd *cli.Command) error {
+
+	http.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello")
+	})
+
+	http.HandleFunc("/bar/{id}", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+	})
+
 	log.Info("Server listen at :8181")
 
 	fmt.Println("Started server on - 127.0.0.1:8080")
