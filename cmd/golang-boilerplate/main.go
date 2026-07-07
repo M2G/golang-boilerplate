@@ -2,33 +2,55 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"html"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/urfave/cli/v3"
 )
 
 func RunAPI(ctx context.Context, cmd *cli.Command) error {
-
-	http.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("GET /foo", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello")
 	})
 
-	http.HandleFunc("/bar/{id}", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+	http.HandleFunc("GET /bar/{id}", func(w http.ResponseWriter, r *http.Request) {
+		id := r.PathValue("id")
+		fmt.Fprintf(w, "Hello, %s", id)
 	})
 
-	log.Println("Server listening on :8080")
-
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		return fmt.Errorf("server error: %w", err)
+	srv := &http.Server{
+		Addr:         ":" + cmd.String("port"),
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  60 * time.Second,
 	}
 
-	return nil
+	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
+	errCh := make(chan error, 1)
+	go func() {
+		log.Printf("Server listening on %s", srv.Addr)
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			errCh <- fmt.Errorf("server error: %w", err)
+		}
+	}()
+
+	select {
+	case err := <-errCh:
+		return err
+	case <-ctx.Done():
+		log.Println("Shutting down server...")
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		return srv.Shutdown(shutdownCtx)
+	}
 }
 
 func main() {
@@ -44,7 +66,14 @@ func main() {
 				Name:    "api",
 				Aliases: []string{"a"},
 				Usage:   "a cli application for the api crud.",
-				Action:  RunAPI,
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:  "port",
+						Value: "8080",
+						Usage: "port d'écoute du serveur",
+					},
+				},
+				Action: RunAPI,
 			},
 		},
 	}
