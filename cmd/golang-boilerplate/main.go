@@ -14,15 +14,24 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-func RunAPI(ctx context.Context, cmd *cli.Command) error {
-	http.HandleFunc("GET /foo", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello")
-	})
+func handleFoo(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello")
+}
 
-	http.HandleFunc("GET /bar/{id}", func(w http.ResponseWriter, r *http.Request) {
-		id := r.PathValue("id")
-		fmt.Fprintf(w, "Hello, %s", id)
-	})
+func handleBar(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	fmt.Fprintf(w, "Hello, %s", id)
+}
+
+func handleHealthz(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprint(w, "ok")
+}
+
+func RunAPI(ctx context.Context, cmd *cli.Command) error {
+	http.HandleFunc("GET /foo", handleFoo)
+	http.HandleFunc("GET /bar/{id}", handleBar)
+	http.HandleFunc("GET /healthz", handleHealthz)
 
 	srv := &http.Server{
 		Addr:         ":" + cmd.String("port"),
