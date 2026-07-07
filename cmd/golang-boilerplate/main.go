@@ -1,12 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"context"
+	"fmt"
+	"html"
 	"log"
 	"net/http"
 	"os"
 	"time"
+
 	"github.com/urfave/cli/v3"
 )
 
@@ -20,13 +22,10 @@ func RunAPI(ctx context.Context, cmd *cli.Command) error {
 		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 	})
 
-	log.Info("Server listen at :8181")
+	log.Println("Server listening on :8080")
 
-	fmt.Println("Started server on - 127.0.0.1:8080")
-
-	err = router.Run()
-	if err != nil {
-		return err
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		return fmt.Errorf("server error: %w", err)
 	}
 
 	return nil
@@ -37,7 +36,7 @@ func main() {
 		Version: "v1.0.0",
 		Usage:   "Test",
 		Action: func(ctx context.Context, cmd *cli.Command) error {
-			fmt.Printf(time.Now().String())
+			fmt.Println(time.Now().String())
 			return nil
 		},
 		Commands: []*cli.Command{
@@ -52,6 +51,5 @@ func main() {
 
 	if err := app.Run(context.Background(), os.Args); err != nil {
 		log.Fatalf("An error occurred: %s", err)
-		return
 	}
 }
